@@ -13,6 +13,8 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+echo 'Installing...'
+
 mv ./firefox /opt/firefox-developer
 mkdir -p /usr/share/app-info/icons/firefox-developer/128x128
 

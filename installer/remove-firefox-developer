@@ -13,6 +13,8 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+echo 'Removing...'
+
 rm -r /opt/firefox-developer
 rm -r /usr/share/app-info/icons/firefox-developer
 
