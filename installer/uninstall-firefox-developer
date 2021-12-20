@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo 'INSTRUCTIONS:'
+echo 'Put the extracted "firefox" folder in the same folder as this script.'
+echo 'Allow this script to be run as application.'
+echo 'Run this script as super-user in a terminal window.'
+
+echo '~#~'
+
+if [ "$EUID" -ne 0 ]; then
+  echo 'Error: No super-user authorization.'
+  echo 'You can type the command "sudo !!" to re-run this script as super-user.'
+  exit 1
+fi
+
+rm -r /opt/firefox-developer
+rm -r /usr/share/app-info/icons/firefox-developer
+
+rm /usr/bin/firefox-developer
+rm /usr/share/applications/firefox-developer.desktop
+
+echo '~#~'
+
+echo 'Done!'
+echo 'Please restart your session if there are any visible errors.'
