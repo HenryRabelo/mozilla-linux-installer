@@ -27,13 +27,13 @@ fi
 
 echo "Removing files from $INSTALL_LOCATION"
 rm -r $INSTALL_LOCATION/firefox-dev
-rm $BIN_LOCATION/bin/firefox-developer
+rm $BIN_LOCATION/bin/firefox-dev
 
 echo "Removing icon from $ICON_LOCATION"
 rm -r $ICON_LOCATION/icons/firefox-dev
 
 echo "Removing Desktop file from $APP_LOCATION"
-rm $APP_LOCATION/share/applications/firefox-developer.desktop
+rm $APP_LOCATION/share/applications/firefox-dev.desktop
 
 echo '~#~'
 
