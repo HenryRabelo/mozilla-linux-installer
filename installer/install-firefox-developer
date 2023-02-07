@@ -3,7 +3,7 @@
 echo 'INSTRUCTIONS:'
 echo 'Put the extracted "firefox" folder in the same folder as this script.'
 echo 'Allow this script to be run as application.'
-echo 'Run this script as super-user in a terminal window.'
+echo 'Run this script in a terminal window.'
 
 echo '~#~'
 
@@ -28,13 +28,13 @@ fi
 
 echo "Moving files to $INSTALL_LOCATION"
 mv ./firefox $INSTALL_LOCATION/firefox-dev
-ln -s $INSTALL_LOCATION/firefox-dev/firefox $BIN_LOCATION/bin/firefox-developer
+ln -s $INSTALL_LOCATION/firefox-dev/firefox $BIN_LOCATION/bin/firefox-dev
 
 echo "Linking icon to $ICON_LOCATION"
 mkdir -p $ICON_LOCATION/icons/firefox-dev/128x128
 ln -s $INSTALL_LOCATION/firefox-dev/browser/chrome/icons/default/default128.png $ICON_LOCATION/icons/firefox-dev/128x128/firefox-dev-icon.png
 
-echo "Creating Desktop file to $APP_LOCATION"
+echo "Creating Desktop file in $APP_LOCATION"
 cp ./firefox-dev.desktop $APP_LOCATION/share/applications/
 
 echo '~#~'
