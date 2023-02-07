@@ -8,20 +8,34 @@ echo 'Run this script as super-user in a terminal window.'
 echo '~#~'
 
 if [ "$EUID" -ne 0 ]; then
-  echo 'Error: No super-user authorization.'
-  echo 'You can type the command "sudo !!" to re-run this script as super-user.'
-  exit 1
+    echo 'Warning: No super-user authorization. Proceeding with unprivileged-user instalation'
+    echo "Installing Firefox Developer Edition to $HOME/.local/share/"
+  
+    INSTALL_LOCATION=$HOME/.local/share
+    BIN_LOCATION=$HOME/.local
+    ICON_LOCATION=$HOME/.local/share
+    APP_LOCATION=$HOME/.local
+  
+  else
+    echo 'Warning: Super-user authorized. Proceeding with super-user instalation'
+    echo 'Installing Firefox Developer Edition to /opt/'
+  
+    INSTALL_LOCATION=/opt
+    BIN_LOCATION=/usr
+    ICON_LOCATION=/usr/share/app-info
+    APP_LOCATION=/usr
 fi
 
-echo 'Installing...'
+echo "Moving files to $INSTALL_LOCATION"
+mv ./firefox $INSTALL_LOCATION/firefox-dev
+ln -s $INSTALL_LOCATION/firefox-dev/firefox $BIN_LOCATION/bin/firefox-developer
 
-mv ./firefox /opt/firefox-developer
-mkdir -p /usr/share/app-info/icons/firefox-developer/128x128
+echo "Linking icon to $ICON_LOCATION"
+mkdir -p $ICON_LOCATION/icons/firefox-dev/128x128
+ln -s $INSTALL_LOCATION/firefox-dev/browser/chrome/icons/default/default128.png $ICON_LOCATION/icons/firefox-dev/128x128/firefox-dev-icon.png
 
-ln -s /opt/firefox-developer/firefox /usr/bin/firefox-developer
-ln -s /opt/firefox-developer/browser/chrome/icons/default/default128.png /usr/share/app-info/icons/firefox-developer/128x128/firefox-developer-icon.png
-
-cp ./firefox-developer.desktop /usr/share/applications/
+echo "Creating Desktop file to $APP_LOCATION"
+cp ./firefox-dev.desktop $APP_LOCATION/share/applications/
 
 echo '~#~'
 
