@@ -1,25 +1,39 @@
 #!/bin/bash
 
 echo 'INSTRUCTIONS:'
-echo 'Put the extracted "firefox" folder in the same folder as this script.'
 echo 'Allow this script to be run as application.'
-echo 'Run this script as super-user in a terminal window.'
+echo 'Run this script as the user that installed this application in a terminal window.'
 
 echo '~#~'
 
 if [ "$EUID" -ne 0 ]; then
-  echo 'Error: No super-user authorization.'
-  echo 'You can type the command "sudo !!" to re-run this script as super-user.'
-  exit 1
+    echo 'Warning: No super-user authorization. Proceeding with the removal for the unprivileged-user installation'
+    echo "Removing Firefox Developer Edition from $HOME/.local/share/"
+  
+    INSTALL_LOCATION=$HOME/.local/share
+    BIN_LOCATION=$HOME/.local
+    ICON_LOCATION=$HOME/.local/share
+    APP_LOCATION=$HOME/.local
+  
+  else
+    echo 'Warning: Super-user authorized. Proceeding with the removal for the super-user instalation'
+    echo 'Removing Firefox Developer Edition from /opt/'
+  
+    INSTALL_LOCATION=/opt
+    BIN_LOCATION=/usr
+    ICON_LOCATION=/usr/share/app-info
+    APP_LOCATION=/usr
 fi
 
-echo 'Removing...'
+echo "Removing files from $INSTALL_LOCATION"
+rm -r $INSTALL_LOCATION/firefox-dev
+rm $BIN_LOCATION/bin/firefox-developer
 
-rm -r /opt/firefox-developer
-rm -r /usr/share/app-info/icons/firefox-developer
+echo "Removing icon from $ICON_LOCATION"
+rm -r $ICON_LOCATION/icons/firefox-dev
 
-rm /usr/bin/firefox-developer
-rm /usr/share/applications/firefox-developer.desktop
+echo "Removing Desktop file from $APP_LOCATION"
+rm $APP_LOCATION/share/applications/firefox-developer.desktop
 
 echo '~#~'
 
