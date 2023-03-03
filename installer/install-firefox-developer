@@ -20,6 +20,7 @@ if [ "$EUID" -ne 0 ]; then
   
     INSTALL_LOCATION=/opt
     HOOK_LOCATION=/usr
+    
 fi
 
 echo "Moving files to $INSTALL_LOCATION"
