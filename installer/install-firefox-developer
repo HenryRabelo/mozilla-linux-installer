@@ -26,11 +26,11 @@ echo "Moving files to $INSTALL_LOCATION"
 mv $(pwd)/firefox $INSTALL_LOCATION/firefox-dev
 ln -s $INSTALL_LOCATION/firefox-dev/firefox $HOOK_LOCATION/bin/firefox-dev
 
-echo "Linking icon to $HOOK_LOCATION"
-mkdir -p $HOOK_LOCATION/share/hicolor/128x128/apps
-ln -s $INSTALL_LOCATION/firefox-dev/browser/chrome/icons/default/default128.png $HOOK_LOCATION/share/hicolor/128x128/apps/firefox-dev.png
+echo "Linking icon to $HOOK_LOCATION/share/icons/hicolor/128x128/apps/"
+mkdir -p $HOOK_LOCATION/share/icons/hicolor/128x128/apps
+ln -s $INSTALL_LOCATION/firefox-dev/browser/chrome/icons/default/default128.png $HOOK_LOCATION/share/icons/hicolor/128x128/apps/firefox-dev.png
 
-echo "Creating Desktop file in $HOOK_LOCATION"
+echo "Creating Desktop file in $HOOK_LOCATION/share/applications/"
 cp $(pwd)/firefox-dev.desktop $HOOK_LOCATION/share/applications/
 
 echo '~#~'
