@@ -12,23 +12,24 @@ if [ "$EUID" -ne 0 ]; then
   
     INSTALL_LOCATION=$HOME/.local/share
     HOOK_LOCATION=$HOME/.local
-  
+    
   else
     echo 'Warning: Super-user authorized. Proceeding with the removal for the super-user instalation'
     echo 'Removing Firefox Developer Edition from /opt/'
   
     INSTALL_LOCATION=/opt
     HOOK_LOCATION=/usr
+    
 fi
 
 echo "Removing files from $INSTALL_LOCATION"
 rm -r $INSTALL_LOCATION/firefox-dev
 rm $HOOK_LOCATION/bin/firefox-dev
 
-echo "Removing icon from $HOOK_LOCATION"
-rm $HOOK_LOCATION/share/hicolor/128x128/apps/firefox-dev.png
+echo "Removing icon from $HOOK_LOCATION/share/icons/hicolor/128x128/apps/"
+rm $HOOK_LOCATION/share/icons/hicolor/128x128/apps/firefox-dev.png
 
-echo "Removing Desktop file from $HOOK_LOCATION"
+echo "Removing Desktop file from $HOOK_LOCATION/share/applications/"
 rm $HOOK_LOCATION/share/applications/firefox-dev.desktop
 
 echo '~#~'
