@@ -1,0 +1,62 @@
+#!/bin/bash
+
+echo 'INSTRUCTIONS:'
+echo 'Put the extracted "firefox" and / or "thunderbird" folders in the same folder as this script.'
+echo 'Allow this script to be run as application.'
+echo 'Run this script in a terminal window.'
+
+echo '~#~'
+
+if [ "$EUID" -ne 0 ]; then
+    echo 'Warning: No super-user authorization. Proceeding with unprivileged-user installation'
+    echo "Installing to $HOME/.local/share/"
+  
+    INSTALL_LOCATION="$HOME/.local/share"
+    HOOK_LOCATION="$HOME/.local"
+  
+  else
+    echo 'Warning: Super-user authorized. Proceeding with root installation'
+    echo 'Installing to /opt/'
+  
+    INSTALL_LOCATION="/opt"
+    HOOK_LOCATION="/usr"
+    
+fi
+
+if [ -d "firefox" ]; then
+    INSTALL=(${INSTALL[@]} 'firefox')
+    ICON_LOCATION="browser/chrome"
+fi
+
+if [ -d "thunderbird" ]; then
+    INSTALL=(${INSTALL[@]} 'thunderbird')
+    ICON_LOCATION="chrome"
+fi
+
+for APPLICATION in "${INSTALL[@]}"; do
+    
+    echo "Moving files to $INSTALL_LOCATION"
+    mv "$(pwd)/$APPLICATION" "$INSTALL_LOCATION/"
+    ln -s "$INSTALL_LOCATION/$APPLICATION/$APPLICATION" "$HOOK_LOCATION/bin/$APPLICATION"
+
+    echo "Linking icon to $HOOK_LOCATION/share/icons/hicolor/128x128/apps/"
+    mkdir -p "$HOOK_LOCATION/share/icons/hicolor/128x128/apps"
+    ln -s "$INSTALL_LOCATION/$APPLICATION/$ICON_LOCATION/icons/default/default128.png" "$HOOK_LOCATION/share/icons/hicolor/128x128/apps/$APPLICATION.png"
+
+    echo "Creating Desktop file in $HOOK_LOCATION/share/applications/"
+    wget --https-only "https://src.fedoraproject.org/rpms/$APPLICATION/raw/rawhide/f/$APPLICATION.desktop"
+    sed -i -e "s/^Icon=.*/Icon=$APPLICATION.png/" "$(pwd)/$APPLICATION.desktop"
+    cp "$(pwd)/$APPLICATION.desktop" "$HOOK_LOCATION/share/applications/"
+
+    echo '~#~'
+
+done
+
+unset INSTALL_LOCATION
+unset HOOK_LOCATION
+unset ICON_LOCATION
+unset INSTALL
+unset APPLICATION
+
+echo 'Done!'
+echo 'Please restart your session if there are any visible errors.'
