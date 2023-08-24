@@ -11,30 +11,35 @@ if [ "$EUID" -ne 0 ]; then
     echo 'Warning: No super-user authorization. Proceeding with unprivileged-user instalation'
     echo "Installing Firefox Developer Edition to $HOME/.local/share/"
   
-    INSTALL_LOCATION=$HOME/.local/share
-    HOOK_LOCATION=$HOME/.local
+    INSTALL_LOCATION="$HOME/.local/share"
+    HOOK_LOCATION="$HOME/.local"
   
   else
     echo 'Warning: Super-user authorized. Proceeding with super-user instalation'
     echo 'Installing Firefox Developer Edition to /opt/'
   
-    INSTALL_LOCATION=/opt
-    HOOK_LOCATION=/usr
+    INSTALL_LOCATION="/opt"
+    HOOK_LOCATION="/usr"
     
 fi
 
 echo "Moving files to $INSTALL_LOCATION"
-mv $(pwd)/firefox $INSTALL_LOCATION/firefox-dev
-ln -s $INSTALL_LOCATION/firefox-dev/firefox $HOOK_LOCATION/bin/firefox-dev
+mv "$(pwd)/firefox" "$INSTALL_LOCATION/firefox-dev"
+ln -s "$INSTALL_LOCATION/firefox-dev/firefox" "$HOOK_LOCATION/bin/firefox-dev"
 
 echo "Linking icon to $HOOK_LOCATION/share/icons/hicolor/128x128/apps/"
-mkdir -p $HOOK_LOCATION/share/icons/hicolor/128x128/apps
-ln -s $INSTALL_LOCATION/firefox-dev/browser/chrome/icons/default/default128.png $HOOK_LOCATION/share/icons/hicolor/128x128/apps/firefox-dev.png
+mkdir -p "$HOOK_LOCATION/share/icons/hicolor/128x128/apps"
+ln -s "$INSTALL_LOCATION/firefox-dev/browser/chrome/icons/default/default128.png" "$HOOK_LOCATION/share/icons/hicolor/128x128/apps/firefox-dev.png"
 
 echo "Creating Desktop file in $HOOK_LOCATION/share/applications/"
-cp $(pwd)/firefox-dev.desktop $HOOK_LOCATION/share/applications/
+wget --https-only "https://src.fedoraproject.org/rpms/firefox/raw/rawhide/f/firefox.desktop"
+sed -i -e "s/^Name=Firefox/Name=Firefox Developer Edition/" -e "s/^Exec=firefox/Exec=firefox-dev/" -e "s/^Icon=firefox/Icon=firefox-dev.png/" "$(pwd)/firefox.desktop"
+mv "$(pwd)/firefox.desktop" "$HOOK_LOCATION/share/applications/firefox-dev.desktop"
 
 echo '~#~'
+
+unset INSTALL_LOCATION
+unset HOOK_LOCATION
 
 echo 'Done!'
 echo 'Please restart your session if there are any visible errors.'
