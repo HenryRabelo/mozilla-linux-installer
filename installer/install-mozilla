@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo 'INSTRUCTIONS:'
 echo 'Put the extracted "firefox" and / or "thunderbird" folders in the same folder as this script.'
@@ -14,6 +14,7 @@ if [ "$EUID" -ne 0 ]; then
 
     INSTALL_LOCATION="$HOME/.local/share"
     HOOK_LOCATION="$HOME/.local"
+    ENVIRONMENT_LOCATION="$HOME/.config"
 
   else
     echo 'Warning: Super-user authorized. Proceeding with root installation'
@@ -21,6 +22,7 @@ if [ "$EUID" -ne 0 ]; then
 
     INSTALL_LOCATION="/opt"
     HOOK_LOCATION="/usr"
+    ENVIRONMENT_LOCATION="/etc"
 
 fi
 
@@ -59,11 +61,24 @@ for DIRECTORY in $(ls -d */); do
 
 done
 
+# Set Relevant Environment Variables
+if [ $XDG_SESSION_TYPE == "wayland" ]; then
+    mkdir -p "$ENVIRONMENT_LOCATION/environment.d"
+    echo 'MOZ_ENABLE_WAYLAND=1' >> "$ENVIRONMENT_LOCATION/environment.d/mozilla.conf"
+fi
+
+if [ $XDG_CURRENT_DESKTOP == "KDE" ]; then
+    mkdir -p "$ENVIRONMENT_LOCATION/environment.d"
+    echo 'GTK_USE_PORTAL=1' >> "$ENVIRONMENT_LOCATION/environment.d/mozilla.conf"
+fi
+
+# Clear Custom Variables
 unset INSTALL_LOCATION
 unset HOOK_LOCATION
 unset APPLICATION
 unset BINARY_NAME
 unset ICON_LOCATION
+unset ENVIRONMENT_LOCATION
 unset TITLE
 unset DIRECTORY
 
