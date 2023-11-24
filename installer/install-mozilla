@@ -44,7 +44,7 @@ for DIRECTORY in $(ls -d */); do
     ln -s "$INSTALL_LOCATION/$APPLICATION/$ICON_LOCATION/icons/default/default128.png" "$HOOK_LOCATION/share/icons/hicolor/128x128/apps/$APPLICATION.png"
 
     echo "Creating Desktop file in $HOOK_LOCATION/share/applications/"
-    TITLE=$(grep "Title=" "$INSTALL_LOCATION/$APPLICATION/updater.ini" | head -c -8 | tail -c +7)
+    TITLE=$(grep 'Title=' "$INSTALL_LOCATION/$APPLICATION/updater.ini" | head -c -8 | tail -c +7)
     wget --https-only "https://src.fedoraproject.org/rpms/$BINARY_NAME/raw/rawhide/f/$BINARY_NAME.desktop"
     sed -i -e "0,/Name=.*/s/Name=.*/Name=$TITLE/" "$(pwd)/$BINARY_NAME.desktop"
     sed -i -e "s/^Icon=.*/Icon=$APPLICATION.png/" "$(pwd)/$BINARY_NAME.desktop"
@@ -70,10 +70,10 @@ fi
 # Clear Custom Variables
 unset INSTALL_LOCATION
 unset HOOK_LOCATION
+unset ENVIRONMENT_LOCATION
 unset APPLICATION
 unset BINARY_NAME
 unset ICON_LOCATION
-unset ENVIRONMENT_LOCATION
 unset TITLE
 unset DIRECTORY
 
