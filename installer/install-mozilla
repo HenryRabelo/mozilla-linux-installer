@@ -10,33 +10,28 @@ echo '~#~'
 # Set Install Location Variables
 if [ "$EUID" -ne 0 ]; then
     echo 'Warning: No super-user authorization. Proceeding with unprivileged-user installation'
-    echo "Installing to $HOME/.local/share/"
-
     INSTALL_LOCATION="$HOME/.local/share"
     HOOK_LOCATION="$HOME/.local"
     ENVIRONMENT_LOCATION="$HOME/.config"
-
   else
     echo 'Warning: Super-user authorized. Proceeding with root installation'
-    echo 'Installing to /opt/'
-
     INSTALL_LOCATION="/opt"
     HOOK_LOCATION="/usr"
     ENVIRONMENT_LOCATION="/etc"
-
 fi
 
 # Prepare for Install
+echo "Installing on $INSTALL_LOCATION"
 for DIRECTORY in $(ls -d */); do
 
     APPLICATION=${DIRECTORY%%/};
 
-    if [ $APPLICATION == "thunderbird" ]; then
-        BINARY_NAME="thunderbird"
-        ICON_LOCATION="chrome"
+    if [ $APPLICATION == 'thunderbird' ]; then
+        BINARY_NAME='thunderbird'
+        ICON_LOCATION='chrome'
     else
-        BINARY_NAME="firefox"
-        ICON_LOCATION="browser/chrome"
+        BINARY_NAME='firefox'
+        ICON_LOCATION='browser/chrome'
     fi
     
     echo "Moving files to $INSTALL_LOCATION"
@@ -49,7 +44,7 @@ for DIRECTORY in $(ls -d */); do
     ln -s "$INSTALL_LOCATION/$APPLICATION/$ICON_LOCATION/icons/default/default128.png" "$HOOK_LOCATION/share/icons/hicolor/128x128/apps/$APPLICATION.png"
 
     echo "Creating Desktop file in $HOOK_LOCATION/share/applications/"
-    TITLE=$(grep Title= $INSTALL_LOCATION/$APPLICATION/updater.ini | head -c -8 | tail -c +7)
+    TITLE=$(grep "Title=" "$INSTALL_LOCATION/$APPLICATION/updater.ini" | head -c -8 | tail -c +7)
     wget --https-only "https://src.fedoraproject.org/rpms/$BINARY_NAME/raw/rawhide/f/$BINARY_NAME.desktop"
     sed -i -e "0,/Name=.*/s/Name=.*/Name=$TITLE/" "$(pwd)/$BINARY_NAME.desktop"
     sed -i -e "s/^Icon=.*/Icon=$APPLICATION.png/" "$(pwd)/$BINARY_NAME.desktop"
@@ -62,12 +57,12 @@ for DIRECTORY in $(ls -d */); do
 done
 
 # Set Relevant Environment Variables
-if [ $XDG_SESSION_TYPE == "wayland" ]; then
+if [ $XDG_SESSION_TYPE == 'wayland' ]; then
     mkdir -p "$ENVIRONMENT_LOCATION/environment.d"
     echo 'MOZ_ENABLE_WAYLAND=1' >> "$ENVIRONMENT_LOCATION/environment.d/mozilla.conf"
 fi
 
-if [ $XDG_CURRENT_DESKTOP == "KDE" ]; then
+if [ $XDG_CURRENT_DESKTOP == 'KDE' ]; then
     mkdir -p "$ENVIRONMENT_LOCATION/environment.d"
     echo 'GTK_USE_PORTAL=1' >> "$ENVIRONMENT_LOCATION/environment.d/mozilla.conf"
 fi
