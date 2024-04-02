@@ -8,7 +8,7 @@ echo 'Run this script in a terminal window.'
 echo '~#~'
 
 # Set Install Location Variables
-if [ "$EUID" -ne 0 ]; then
+if [ $(id -u) -ne 0 ]; then
     echo 'Warning: No super-user authorization. Proceeding with unprivileged-user installation'
     INSTALL_LOCATION="$HOME/.local/share"
     HOOK_LOCATION="$HOME/.local"
@@ -45,7 +45,7 @@ for DIRECTORY in $(ls -d */); do
 
     echo "Creating Desktop file in $HOOK_LOCATION/share/applications/"
     TITLE=$(grep 'Title=' "$INSTALL_LOCATION/$APPLICATION/updater.ini" | head -c -8 | tail -c +7)
-    wget --https-only "https://src.fedoraproject.org/rpms/$BINARY_NAME/raw/rawhide/f/$BINARY_NAME.desktop"
+    wget --https-only --no-hsts "https://src.fedoraproject.org/rpms/$BINARY_NAME/raw/rawhide/f/$BINARY_NAME.desktop"
     sed -i -e "0,/Name=.*/s/Name=.*/Name=$TITLE/" "$(pwd)/$BINARY_NAME.desktop"
     sed -i -e "s/^Icon=.*/Icon=$APPLICATION.png/" "$(pwd)/$BINARY_NAME.desktop"
     sed -i -e "s/^Exec=$BINARY_NAME/Exec=$APPLICATION/" "$(pwd)/$BINARY_NAME.desktop"
