@@ -1,4 +1,8 @@
 ## Mozilla Linux Installer
+[![Mozilla Badge](https://img.shields.io/badge/Mozilla-black?logo=mozilla&labelColor=black)](https://mozilla.org/)
+[![Firefox Badge](https://img.shields.io/badge/Firefox-FF7139?logo=firefoxbrowser&labelColor=white)](https://mozilla.org/firefox/)
+[![Firefox Dev Badge](https://img.shields.io/badge/Firefox_Dev-008DEA?logo=firefoxbrowser&logoColor=008DEA&labelColor=white)](https://mozilla.org/firefox/developer/)
+[![Thunderbird Badge](https://img.shields.io/badge/Thunderbird-0A84FF?logo=thunderbird&labelColor=white)](https://thunderbird.net/)
 
 This script was created to more easily install the Firefox Developer Edition tarball from the Mozilla website, but was expanded to encompass any Firefox version, along with Thunderbird.
 
