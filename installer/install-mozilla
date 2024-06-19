@@ -3,7 +3,7 @@
 echo 'INSTRUCTIONS:'
 echo 'Put the extracted "firefox" and / or "thunderbird" folders in the same folder as this script.'
 echo 'Allow this script to be run as application.'
-echo 'Run this script in a terminal window.'
+echo 'Run this script in a terminal window, with the name of the application to be installed as an argument.'
 
 echo '~#~'
 
@@ -22,9 +22,7 @@ fi
 
 # Prepare for Install
 echo "Installing on $INSTALL_LOCATION"
-for DIRECTORY in $(ls -d */); do
-
-    APPLICATION=${DIRECTORY%%/};
+for APPLICATION in $@; do
 
     if [ $APPLICATION == 'thunderbird' ]; then
         BINARY_NAME='thunderbird'
@@ -75,7 +73,6 @@ unset APPLICATION
 unset BINARY_NAME
 unset ICON_LOCATION
 unset TITLE
-unset DIRECTORY
 
 echo 'Done!'
 echo 'Please restart your session if there are any visible errors.'
