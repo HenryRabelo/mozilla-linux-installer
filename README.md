@@ -23,4 +23,6 @@ There are a few reasons as to why install the executable binaries from the offic
 or an appropriate unique name for the command to run it.
 3. Put each program folder in the same folder as the installer script;
 4. Right click the installer script, select "proprieties", "permissions", and allow it to be run as application / executed as a program;
-5. Right click the script directory, select "Open in terminal" and run it using the command: `./install-mozilla`
+5. Right click the script directory, select "Open in terminal" and run it using the command: `./install-mozilla [applications]`
+    - If the folder is called firefox-dev, you should run `./install-mozilla firefox-dev`
+    - If you want to install firefox and thunderbird, you should run `./install-mozilla firefox thunderbird`
